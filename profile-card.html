@@ -5,7 +5,7 @@
 <title>Sameer Chahande — Profile Card</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap');
-
+ 
   * { box-sizing: border-box; }
   body {
     margin: 0;
@@ -22,22 +22,33 @@
     border-radius: 16px;
     padding: 28px;
     box-shadow: 0 0 40px #22d3ee22, inset 0 0 60px #7c3aed11;
+    animation: cardIn 0.8s ease-out;
   }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+ 
   .top { display: flex; gap: 28px; }
   .photo-frame {
     width: 240px;
     height: 300px;
     border-radius: 12px;
     border: 2px solid #22d3ee;
-    box-shadow: 0 0 20px #22d3eeaa, 0 0 40px #7c3aed55;
     overflow: hidden;
     flex-shrink: 0;
     background: #1a2236;
+    animation: glowPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 20px #22d3eeaa, 0 0 40px #7c3aed55; }
+    50%      { box-shadow: 0 0 32px #22d3eecc, 0 0 60px #7c3aed88; }
   }
   .photo-frame img {
     width: 100%; height: 100%; object-fit: cover;
     filter: grayscale(20%) contrast(1.05);
   }
+ 
   .info { flex: 1; color: #d1d5db; font-size: 13.5px; }
   .info .mail {
     display: inline-block;
@@ -50,22 +61,45 @@
     letter-spacing: 0.5px;
   }
   .sys-title { color: #22d3ee; font-weight: 800; letter-spacing: 2px; margin-bottom: 10px; }
+  .cursor {
+    display: inline-block;
+    width: 8px; height: 14px;
+    background: #22d3ee;
+    margin-left: 4px;
+    animation: blink 1s steps(1) infinite;
+    vertical-align: -2px;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+ 
   .row {
     display: flex;
     align-items: baseline;
     gap: 8px;
     margin: 5px 0;
+    opacity: 0;
+    animation: rowIn 0.4s ease-out forwards;
   }
+  .row:nth-child(1) { animation-delay: 0.1s; }
   .row .label { color: #67e8f9; white-space: nowrap; }
-  .row .dots {
-    flex: 1;
-    border-bottom: 2px dotted #334155;
-    height: 0;
-    margin-bottom: 4px;
-  }
+  .row .dots { flex: 1; border-bottom: 2px dotted #334155; height: 0; margin-bottom: 4px; }
   .row .value { color: #e5e7eb; white-space: nowrap; }
   .divider { border: none; border-top: 1px dashed #22d3ee33; margin: 12px 0; }
-
+ 
+  .info .row:nth-of-type(1) { animation-delay: .15s; }
+  .info .row:nth-of-type(2) { animation-delay: .30s; }
+  .info .row:nth-of-type(3) { animation-delay: .45s; }
+  .info .row:nth-of-type(4) { animation-delay: .60s; }
+  .info .row:nth-of-type(5) { animation-delay: .75s; }
+  .info .row:nth-of-type(6) { animation-delay: .90s; }
+  .info .row:nth-of-type(7) { animation-delay: 1.05s; }
+  .info .row:nth-of-type(8) { animation-delay: 1.20s; }
+  .info .row:nth-of-type(9) { animation-delay: 1.35s; }
+  .info .row:nth-of-type(10){ animation-delay: 1.50s; }
+  @keyframes rowIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+ 
   .stats {
     display: flex;
     justify-content: space-around;
@@ -75,15 +109,35 @@
     border-top: 1px solid #22d3ee33;
   }
   .stat-num { font-size: 30px; font-weight: 800; color: #f9fafb; text-align: center; }
-  .stat-label { font-size: 11px; color: #9ca3af; text-align: center; margin-top: 4px; }
-  .streak-ring {
-    width: 70px; height: 70px; border-radius: 50%;
-    border: 3px solid #22d3ee;
+  .stat-label { font-size: 11px; color: #9ca3af; text-align: center; margin-top: 4px; letter-spacing: 1px; }
+ 
+  .ring-wrap { position: relative; width: 84px; height: 84px; }
+  .ring-wrap svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: #1f2937; stroke-width: 6; }
+  .ring-fg {
+    fill: none; stroke: #22d3ee; stroke-width: 6; stroke-linecap: round;
+    stroke-dasharray: 226;
+    stroke-dashoffset: 226;
+    filter: drop-shadow(0 0 6px #22d3eecc);
+    animation: ringFill 1.8s ease-out 0.6s forwards;
+  }
+  @keyframes ringFill { to { stroke-dashoffset: 55; } }
+  .ring-center {
+    position: absolute; inset: 0;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 0 15px #22d3eeaa;
     color: #22d3ee; font-weight: 800; font-size: 18px;
   }
-
+ 
+  .bars { display: flex; align-items: flex-end; gap: 3px; height: 34px; margin-top: 8px; }
+  .bars span {
+    width: 5px; background: #22d3ee; border-radius: 2px 2px 0 0;
+    opacity: .85; transform-origin: bottom;
+    animation: barGrow 0.6s ease-out forwards;
+    animation-delay: calc(var(--i) * 0.05s + 1s);
+    transform: scaleY(0);
+  }
+  @keyframes barGrow { to { transform: scaleY(1); } }
+ 
   .socials {
     display: flex;
     justify-content: center;
@@ -99,31 +153,32 @@
     display: flex;
     align-items: center;
     gap: 6px;
+    transition: color .2s, text-shadow .2s;
   }
-  .socials a:hover { color: #22d3ee; }
+  .socials a:hover { color: #22d3ee; text-shadow: 0 0 8px #22d3eeaa; }
 </style>
 </head>
 <body>
-
+ 
 <div class="card">
   <div class="top">
     <div class="photo-frame">
-      <!-- 🔴 REPLACE the src below with your own photo file -->
+      <!-- REPLACE with your own photo filename, uploaded to the same repo folder -->
       <img src="sameer_photo.jpeg" alt="Sameer Chahande" />
     </div>
-
+ 
     <div class="info">
-      <div class="sys-title">SYSTEM.INFO</div>
+      <div class="sys-title">SYSTEM.INFO<span class="cursor"></span></div>
       <div class="mail">sameerchahande04@gmail.com</div>
-
+ 
       <div class="row"><span class="label">Subject</span><span class="dots"></span><span class="value">Sameer Chahande</span></div>
       <div class="row"><span class="label">Role</span><span class="dots"></span><span class="value">ML Developer / Chatbot Developer / Web Developer</span></div>
       <div class="row"><span class="label">Origin</span><span class="dots"></span><span class="value">Nagpur, Maharashtra, India</span></div>
       <div class="row"><span class="label">Education</span><span class="dots"></span><span class="value">B.Pharma + AI/ML Cert (IIT Patna)</span></div>
       <div class="row"><span class="label">Status</span><span class="dots"></span><span class="value">Building · Learning · Shipping</span></div>
-
+ 
       <hr class="divider" />
-
+ 
       <div class="row"><span class="label">Core.Lang</span><span class="dots"></span><span class="value">Python, SQL</span></div>
       <div class="row"><span class="label">Core.Frontend</span><span class="dots"></span><span class="value">HTML, CSS, JS, React</span></div>
       <div class="row"><span class="label">Core.Backend</span><span class="dots"></span><span class="value">FastAPI, Flask</span></div>
@@ -131,19 +186,31 @@
       <div class="row"><span class="label">Core.Infra</span><span class="dots"></span><span class="value">Docker, AWS, Git</span></div>
     </div>
   </div>
-
+ 
   <div class="stats">
     <div>
-      <div class="stat-num">—</div>
+      <div class="stat-num" id="contribCount">0</div>
       <div class="stat-label">TOTAL CONTRIBUTIONS</div>
+      <div class="bars" id="bars"></div>
     </div>
-    <div class="streak-ring">0</div>
+ 
+    <div>
+      <div class="ring-wrap">
+        <svg width="84" height="84" viewBox="0 0 84 84">
+          <circle class="ring-bg" cx="42" cy="42" r="36" />
+          <circle class="ring-fg" cx="42" cy="42" r="36" />
+        </svg>
+        <div class="ring-center" id="streakCount">0</div>
+      </div>
+      <div class="stat-label" style="margin-top:8px;">CURRENT STREAK</div>
+    </div>
+ 
     <div>
       <div class="stat-num" style="font-size:16px;">Sameer Chahande's</div>
       <div class="stat-label">GITHUB STATS</div>
     </div>
   </div>
-
+ 
   <div class="socials">
     <a href="https://www.linkedin.com/in/sameer-chahande-8b6b96390/">🔗 LINKEDIN</a>
     <a href="https://instagram.com/YOUR_INSTAGRAM_HANDLE">📷 INSTAGRAM</a>
@@ -151,6 +218,42 @@
     <a href="mailto:sameerchahande04@gmail.com">✉️ EMAIL</a>
   </div>
 </div>
+ 
+<script>
+  // 🔴 EDIT these two numbers to your real GitHub stats before recording the GIF
+  const TOTAL_CONTRIBUTIONS = 123;
+  const CURRENT_STREAK = 12;
+ 
+  function countUp(el, target, duration) {
+    const start = performance.now();
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      el.textContent = Math.floor(progress * target);
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+ 
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      countUp(document.getElementById('contribCount'), TOTAL_CONTRIBUTIONS, 1800);
+      countUp(document.getElementById('streakCount'), CURRENT_STREAK, 1800);
+    }, 500);
+ 
+    // random-ish sparkline bars, tallest near the end
+    const barsEl = document.getElementById('bars');
+    const heights = [40,55,30,70,45,60,80,50,65,90,55,75];
+    heights.forEach((h, i) => {
+      const bar = document.createElement('span');
+      bar.style.height = h + '%';
+      bar.style.setProperty('--i', i);
+      barsEl.appendChild(bar);
+    });
+  });
+</script>
+ 
+</body>
+</html>
 
 </body>
 </html>
